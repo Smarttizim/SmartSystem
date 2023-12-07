@@ -13,11 +13,6 @@ class StudentFilter(filters.FilterSet):
         fields = ['id','name','phone']
 
 
-# class StudentGroupFilter(filters.FilterSet):
-#     class Meta:
-#         model = Student
-#         fields = ['id','group','student']
-
 class GroupFilter(filters.FilterSet):
     class Meta:
         model = Group

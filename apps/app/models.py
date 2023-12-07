@@ -33,7 +33,7 @@ class Room(models.Model):
 
 class Student(models.Model):
     name = models.CharField(max_length=500, verbose_name="Student name")
-    phone = models.CharField(max_length=9, verbose_name="Student phone", null=True, blank=True)
+    phone = models.CharField(max_length=13, verbose_name="Student phone", null=True, blank=True)
     first_added = models.DateField(null=True, blank=True)
     student_id = models.IntegerField(unique=True, null=True, blank=True)
     @property
@@ -84,15 +84,6 @@ class Group(models.Model):
             return "active"
         else:
             return "ended"
-        
-    def course_name(self):
-        return self.course.name
-    def room_name(self):
-        return self.room.name
-    def teacher_name(self):
-        return self.teacher.username
-    def user_name(self):
-        return self.user.username
     
     def __str__(self):
         return self.name
@@ -106,14 +97,6 @@ class Group(models.Model):
 class StudentGroup(models.Model):
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True, related_name='groups')
-    @property
-    def group_name(self):
-        return self.group.name
-    @property
-    def student_name(self):
-        return self.student.name
-    def __str__(self):
-        return self.student.name
     class Meta:
         db_table = "StudentGroup"  # noqa
         verbose_name = "Student Group"
@@ -123,8 +106,9 @@ class StudentGroup(models.Model):
         
 
 class FinanceInput(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     cost = models.FloatField( null=True, blank=True)
     date = models.DateField()
     next_pay = models.DateField()
@@ -150,14 +134,7 @@ class FinanceInput(models.Model):
     @property
     def chek_id(self):
         return 100000 + self.id
-    
-    @property
-    def student_name(self):
-        return self.student.name
-    
-    @property
-    def student_group(self):
-        return self.group.group.name
+
     
     def __str__(self):
         return f"Aziz"
@@ -188,14 +165,9 @@ class ClassRoom(models.Model):
         return f"{self.name}"  
     
 class ClassStudent(models.Model):
-    classes = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, null=True, blank=True)
+    classes = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, null=True, blank=True,related_name='classtype')
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True, related_name='classes')
-    @property
-    def class_name(self):
-        return self.classes.name
-    @property
-    def student_name(self):
-        return self.student.name
+
     def __str__(self):
         return self.student.name
     class Meta:
@@ -211,19 +183,12 @@ class ClassStudent(models.Model):
 
 class Attendece(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
-    group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     classes = models.ForeignKey(ClassStudent, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField()
     status = models.BooleanField()
     desc = models.TextField(null=True, blank=True, help_text='Sababsiz')
-    
-    @property
-    def student_name(self):
-        return self.student.name
-    
-    @property
-    def student_group(self):
-        return self.group.group.name
+
     
     def __str__(self):
         return f"Aziz"  

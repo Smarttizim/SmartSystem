@@ -15,7 +15,7 @@ class RoomAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'phone',]
+    list_display = ['name', 'phone','student_id']
     search_fields = ['name', 'phone']
 
 @admin.register(Group)
