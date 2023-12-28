@@ -32,24 +32,32 @@ class GroupSerializer(serializers.ModelSerializer):
         representation['teacher'] = instance.teacher.username if instance.teacher else None
         return representation
     
-
-class StudentGroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentGroup
-        fields = ['id','group']
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # representation['student'] = instance.student.name if instance.student else None
-        representation['group'] = instance.group.name if instance.group else None
-        return representation
-
-
 class StudentSerializer(serializers.ModelSerializer):
     # groups = StudentGroupSerializer(many=True, read_only=True,source='group_name',)
-    groups = StudentGroupSerializer(many=True, read_only=True)
+    # groups = StudentGroupSerializer(many=True, read_only=True)
     class Meta:
         model = Student
-        fields = ['id','name','phone','first_added','student_id','groups']
+        fields = ['id','name','phone','first_added','student_id']
+
+    # def create(self, validated_data):
+    #     students_data = validated_data.pop('student')
+    #     student_group = StudentGroup.objects.create(**validated_data)
+    #     for student_data in students_data:
+    #         Student.objects.create(group=student_group, **student_data)
+    #     return student_group
+
+class StudentGroupSerializer(serializers.ModelSerializer):
+    student = StudentSerializer(many=True)
+    class Meta:
+        model = StudentGroup
+        fields = ['id','group','student']
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['group'] = instance.group.name if instance.group else None
+        return representation
+    
+
+
 
 
 

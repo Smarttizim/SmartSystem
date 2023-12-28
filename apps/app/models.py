@@ -96,7 +96,7 @@ class Group(models.Model):
         
 class StudentGroup(models.Model):
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True, related_name='groups')
+    student = models.ManyToManyField(Student, related_name='groups')
     class Meta:
         db_table = "StudentGroup"  # noqa
         verbose_name = "Student Group"
@@ -107,7 +107,7 @@ class StudentGroup(models.Model):
 
 class FinanceInput(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ManyToManyField(Student)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     cost = models.FloatField( null=True, blank=True)
     date = models.DateField()
@@ -166,7 +166,7 @@ class ClassRoom(models.Model):
     
 class ClassStudent(models.Model):
     classes = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, null=True, blank=True,related_name='classtype')
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True, related_name='classes')
+    student = models.ManyToManyField(Student, related_name='classes')
 
     def __str__(self):
         return self.student.name
@@ -182,7 +182,7 @@ class ClassStudent(models.Model):
 
 
 class Attendece(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ManyToManyField(Student)
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     classes = models.ForeignKey(ClassStudent, on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField()

@@ -115,44 +115,96 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
 
 }
+
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": False,
-
+    "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": "",
+    "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
-    "JSON_ENCODER": None,
     "JWK_URL": None,
     "LEEWAY": 0,
-
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-
     "JTI_CLAIM": "jti",
-
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(days=365),
-    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=365),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+}
 
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+
+JAZZMIN_SETTINGS = {
+    "site_title": "TexnikOn Admin",
+    "site_header": "TexnikOn",
+    "site_brand": "TexnikOn",
+    "site_logo": "books/img/logo.png",
+    "login_logo": None,
+    "login_logo_dark": None,
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "welcome_sign": "Welcome to the TexnikOn",
+    "copyright": "Acme TexnikOn Ltd",
+    "search_model": ["auth.User", "auth.Group"],
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "auth.User"},
+        {"app": "books"},
+    ],
+    "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "auth.user"}
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
+    "custom_links": {
+        "books": [{
+            "name": "Make Messages", 
+            "url": "make_messages", 
+            "icon": "fas fa-comments",
+            "permissions": ["books.view_book"]
+        }]
+    },
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+
+        "app.Course": "fa fa-bars",
+        "app.Room": "fa fa-door-open",
+        "app.Student": "fa fa-graduation-cap",
+        "app.Attendece": "fa fa-calendar",
+        "app.ClassStudent": "fa fa-address-book",
+        "app.ClassRoom": "fa fa-university",
+        "app.ClassType": "fa fa-server",
+        # "app.FinanceInputs": "fa fa-money",
+        "app.Group": "fa fa-newspaper",
+        "app.StudentGroup": "fa fa-users",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": False,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
 }
 
 
